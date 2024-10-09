@@ -3,3 +3,17 @@
 body{
   font-family: "Inter", sans-serif;
 }
+
+.section-container{
+  @apply max-w-screen-2xl container mx-auto;
+}
+.subtitle{
+  @apply text-red uppercase tracking-wide font-medium text-lg;
+}
+.title{
+  @apply text-4xl md:text-5xl font-bold my-2;
+}
+
+.heartStar{
+ border-radius:0px 28px 0 28px;
+}
