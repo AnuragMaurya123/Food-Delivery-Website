@@ -29,10 +29,10 @@ const OurStory = () => {
       ];
         
   return (
-    <div className="section-container">
+    <div className="section-container   py-16">
       <div className="flex md:flex-row items-center justify-between gap-12 flex-col">
-        <div className="md:w-1/2 flex flex-col justify-start ">
-       <div className="">
+        <div className="md:w-1/2 flex flex-col  w-full lg:w-auto">
+       <div className="space-y-9">
        <p className="subtitle">Our Story & Services</p>
             <h2 className="title ">
             Our Culinary Journey <br /> And Services

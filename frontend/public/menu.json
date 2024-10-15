@@ -21,7 +21,7 @@
         "recipe": "Roasted duck breast (served pink) with gratin potato and a griottine cherry sauce",
         "image": "/images/recipes/img1.png",
         "category": "popular",
-        "price": 14.5
+        "price": 11.5
     },
     {
         "_id": "642c155b2c4774f05c36ee88",
@@ -37,7 +37,7 @@
         "recipe": "Roasted duck breast (served pink) with gratin potato and a griottine cherry sauce",
         "image": "/images/recipes/img2.png",
         "category": "popular",
-        "price": 14.5
+        "price": 12.5
     },
     {
         "_id": "642c155b2c4774f05c36ee74",
@@ -61,7 +61,7 @@
         "recipe": "Roasted duck breast (served pink) with gratin potato and a griottine cherry sauce",
         "image": "/images/recipes/img2.png",
         "category": "popular",
-        "price": 14.5
+        "price": 15.5
     },
     {
         "_id": "642c155b2c4774f05c36ee8c",
@@ -181,7 +181,7 @@
         "recipe": "Roasted duck breast (served pink) with gratin potato and a griottine cherry sauce",
         "image": "/images/recipes/img2.png",
         "category": "popular",
-        "price": 14.5
+        "price": 16.5
     },
     {
         "_id": "642c155b2c4774f05c36eea8",
@@ -293,7 +293,7 @@
         "recipe": "Roasted duck breast (served pink) with gratin potato and a griottine cherry sauce",
         "image": "/images/recipes/img1.png",
         "category": "popular",
-        "price": 14.5
+        "price": 18.5
     },
     {
         "_id": "642c155b2c4774f05c36ee8b",

@@ -4,7 +4,7 @@ import {Link} from "react-router-dom"
 import { IoMdHeart } from "react-icons/io";
 const Card = ({ item, i }) => {
   const [isHeart, setIsHeart] = useState(false)
-  console.log(isHeart);
+
   
   return (
    <div className="mx-6">
