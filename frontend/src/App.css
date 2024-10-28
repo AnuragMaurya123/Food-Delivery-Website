@@ -22,6 +22,18 @@ body{
  padding:30px 0 !important;
 }
 
+/* Hide default spinner buttons in input fields for Chrome, Safari, and Edge */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Hide default spinner buttons for Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
 
 
 

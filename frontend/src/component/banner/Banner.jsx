@@ -47,7 +47,7 @@ const Banner = () => {
 
         {/* Text Section */}
         <div className="md:w-1/2 space-y-7 px-4">
-          <h1 className="md:text-3xl text-4xl font-bold md:leading-snug leading-snug">
+          <h1 className="md:text-4xl text-5xl font-extrabold md:leading-snug leading-snug">
             Dive into Delights
             <br /> Of Delectable <span className="text-green">Food</span>
           </h1>

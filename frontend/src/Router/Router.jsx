@@ -1,21 +1,20 @@
-import { createBrowserRouter } from "react-router-dom";
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import Home from '../pages/home/Home';
+import Menu from '../pages/shop/Menu';
+import ProtectedRouter from './ProtectedRouter';
+import UserDashboard from '../pages/dashboad/UserDashboard';
+import CartItems from '../pages/shop/CartItems';
 
-import Main from "../layout/Main";
-import Home from "../pages/home/Home";
+const Router = () => {
+  return (
+    <Routes>
+      <Route path='/' element={<Home />} />
+      <Route path='/menu' element={<ProtectedRouter><Menu /></ProtectedRouter>} /> 
+      <Route path='/update-profile' element={<ProtectedRouter><UserDashboard /></ProtectedRouter>} /> 
+      <Route path='/cart-items' element={<ProtectedRouter><CartItems /></ProtectedRouter>} /> 
+    </Routes>
+  );
+};
 
-const router=createBrowserRouter([
-    {
-        path:"/",
-        element:<Main/>,
-        children:[
-            {
-                path:"/",
-                element:<Home/>,
-            }
-        ]
-    }
-    
-
-])
-
-export default router
+export default Router;

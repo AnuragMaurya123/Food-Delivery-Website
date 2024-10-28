@@ -1,66 +1,86 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import logo from "/logo.png";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
-import { BiPhoneCall } from "react-icons/bi";
+import { FaUserAlt } from "react-icons/fa";
+import { Link} from "react-router-dom";
+import LoginSingup from "../model/LoginSingup";
+import { AuthContext } from '../../context/AuthProvider'
+import Profile from "../Profile/Profile";
+
 const Navbar = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
+
   const [isSticky, setIsSticky] = useState(false);
   const dropdownMenuRef = useRef(null);
   const dropdownServicesRef = useRef(null);
+  const {token,model, setModel,openModal,modalRef,countAddToCart} =useContext(AuthContext)  
 
   const handleToggle = (dropdownName) => {
     setOpenDropdown(openDropdown === dropdownName ? null : dropdownName);
   };
+
   useEffect(() => {
-    const hanldeOutside = (e) => {
+    //when you click ouside menu or services option box it will close option box
+    const handleOutside = (e) => {
       if (
-        (dropdownMenuRef.current &&
-          !dropdownMenuRef.current.contains(e.target)) ||
-        (dropdownServicesRef.current &&
-          !dropdownServicesRef.current.contains(e.target))
+        (dropdownMenuRef.current && !dropdownMenuRef.current.contains(e.target)) &&
+        (dropdownServicesRef.current && !dropdownServicesRef.current.contains(e.target)) &&
+        !e.target.closest('.navbar') // Check if it's not within the navbar
       ) {
         setOpenDropdown(null);
       }
     };
-    document.addEventListener("mousedown", hanldeOutside);
-
+  
+    document.addEventListener("mousedown", handleOutside);
+  
     return () => {
-      document.removeEventListener("mousedown", hanldeOutside);
+      document.removeEventListener("mousedown", handleOutside);
     };
   }, [dropdownMenuRef, dropdownServicesRef]);
 
+  //handle dropdown of menu and sevrice
+  const handleonclick=()=>{
+   return setOpenDropdown(null)
+  }
+ //list of nav link
   const navItems = (
     <>
       <li>
-        <a>Home</a>
+        <Link to={"/"}>Home</Link>
       </li>
       <li ref={dropdownMenuRef} tabIndex={0} className="relative">
-        <a
-          role="button"
-          onClick={() => handleToggle("menu")}
-          className="cursor-pointer"
+  <a
+    role="button"
+    onClick={() => handleToggle("menu")}
+    className="cursor-pointer"
+  >
+    Menu {openDropdown === "menu" ? <FaAngleUp /> : <FaAngleDown />}
+  </a>
+  {openDropdown === "menu" && (
+    <ul className="lg:absolute lg:left-0 lg:top-8 lg:mt-2 w-48 bg-base-100 rounded-lg lg:shadow-lg p-2 z-10">
+      <li>
+        <Link onClick={handleonclick} 
+         to={"/menu"}
         >
-          Menu {openDropdown === "menu" ? <FaAngleUp /> : <FaAngleDown />}
-        </a>
-        {openDropdown === "menu" && (
-          <ul className="lg:absolute lg:left-0  lg:top-8 lg:mt-2 w-48 bg-base-100 rounded-lg lg:shadow-lg p-2 z-10 ">
-            <li>
-              <a className="">All</a>
-            </li>
-            <li>
-              <a className="">Salad</a>
-            </li>
-            <li>
-              <a className="">Pizza</a>
-            </li>
-          </ul>
-        )}
+          All
+        </Link>
       </li>
+      <li>
+        <a className="">Salad</a>
+      </li>
+      <li>
+        <a className="">Pizza</a>
+      </li>
+    </ul>
+  )}
+</li>
       <li ref={dropdownServicesRef} tabIndex={0} className="relative">
         <a
           role="button"
           onClick={() => handleToggle("services")}
           className="cursor-pointer"
+          aria-haspopup="true"
+          aria-expanded={openDropdown === "services"}
         >
           Services{" "}
           {openDropdown === "services" ? <FaAngleUp /> : <FaAngleDown />}
@@ -86,23 +106,34 @@ const Navbar = () => {
   );
 
   useEffect(()=>{
+    //stichy header fuction
    const handleNav=()=>{
     const offset=window.scrollY
-    if (offset >0) {
+    if (offset > 0) {
       setIsSticky(true)
     } else {
       setIsSticky(false)
     }
    }
     window.addEventListener("scroll",handleNav)
-    return ()=>{window.addEventListener("scroll",handleNav)}
+    return ()=>{window.removeEventListener("scroll",handleNav)}
   },[isSticky])
+
+  const handleModel = () => {
+    setModel("login");
+    if (modalRef.current) {
+      openModal();
+    }
+  };
+
 
   return (
     <header className={`${isSticky ? "fixed top-0 left-0 right-0 transition-all duration-300 ease-in-out shadow-md bg-base-100 z-50":""}`}>
       <div className='navbar section-container'>
         <div className="navbar-start">
+           {/* option for small screen */}
           <div className="dropdown">
+           
             <div tabIndex={0} role="button" className="btn  btn-ghost lg:hidden">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -119,13 +150,16 @@ const Navbar = () => {
                 />
               </svg>
             </div>
+
             <ul
               tabIndex={0}
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
             >
               {navItems}
             </ul>
+
           </div>
+          {/* logo */}
           <a href="/">
             <img src={logo} alt="" />
           </a>
@@ -133,10 +167,10 @@ const Navbar = () => {
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{navItems}</ul>
         </div>
-        <div className="navbar-end flex items-center">
+        <div className="navbar-end flex items-center gap-1">
 
           {/* Serach Button */}
-          <button tabIndex={0} className="btn btn-ghost btn-circle hidden lg:flex">
+          <button tabIndex={0} className="btn btn-ghost btn-circle flex">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -154,7 +188,8 @@ const Navbar = () => {
           </button>
 
           {/* cart button */}
-          <label tabIndex={0} className="dropdown dropdown-end lg:flex items-center justify-center hidden ">
+         <Link to={"/cart-items"}>
+         <label tabIndex={0} className="dropdown dropdown-end flex items-center justify-center  ">
             <div
               tabIndex={0}
               role="button"
@@ -175,19 +210,26 @@ const Navbar = () => {
                     d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                   />
                 </svg>
-                <span className="badge badge-sm indicator-item">8</span>
+                <span className="badge badge-sm indicator-item">{countAddToCart()}</span>
               </div>
             </div>
           </label>
+         </Link>
+
+         {token && <Profile/>}
 
           {/*Button  */}
-          <a className="btn bg-green flex items-center gap-2 rounded-full text-white px-6">
-            <BiPhoneCall /> Contact
+         {!token &&
+          <a onClick={handleModel} className="btn bg-green flex items-center gap-2 rounded-full text-white px-6">
+          <FaUserAlt /> Login
           </a>
+         }
+          <LoginSingup  model={model} setModel={setModel} />
         </div>
       </div>
     </header>
   );
+
 };
 
 export default Navbar;

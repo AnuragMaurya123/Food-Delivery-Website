@@ -1,17 +1,14 @@
-/* eslint-disable react/prop-types */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Card from '../../component/specialCard/Card';
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import Card from '../../component/card/Card';
+import { AuthContext } from '../../context/AuthProvider'; 
 
 
 const SpecialDishes = () => {
-  const [recepit, setRecepit] = useState([]);
-  const slider = useRef(null);
-
-
+  const {Backend_Url,recepit}=useContext(AuthContext)
+  
   const  settings = {
     dots: true,
     infinite: true,
@@ -55,18 +52,7 @@ const SpecialDishes = () => {
     ]
   };
 
-  useEffect(() => {
-    fetch("/menu.json")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        
-        const popularItems = data.filter((item) => item.category === "popular");
-        setRecepit(popularItems);
-       
-      });
-  }, [settings.slidesToScroll]);
-
+ 
 
 
   return (
@@ -78,7 +64,7 @@ const SpecialDishes = () => {
 
      
 
-      <Slider ref={slider} {...settings} className="overflow-hidden mt-10 ">
+      <Slider  {...settings} className="overflow-hidden mt-10 ">
         {recepit?.map((item, i) =><Card item={item}  key={i}  />)}
       </Slider>
     </div>
