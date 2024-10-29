@@ -3,7 +3,6 @@
 import React, { createContext, useEffect, useReducer, useRef, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { getAuth } from "firebase/auth";
 import app from "../firebase/firebase.config";
@@ -45,11 +44,11 @@ const AuthProvider = ({ children }) => {
   const [userCartDetail, setUserCartDetail] = useState([{}]);
   const [state, dispatch] = useReducer(authReducer,initialState)
   const modalRef = useRef(null);
-  const navigate = useNavigate();
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
   const [cartItem, setCartItem] = useState({})
   
+
   //list of fav food Ids
   useEffect(() => {
     const fetchfavIds = async () => {
@@ -99,7 +98,7 @@ const AuthProvider = ({ children }) => {
 
  useEffect(() => {
     fetchData()
-  }, []);
+  }, [state.token]);
 
   // for removing from favorite list
   const  deleteToFav = async (id) => {
@@ -140,42 +139,41 @@ const AuthProvider = ({ children }) => {
   }
    
   // fetching user profile
-  useEffect(()=>{
-  if (state.token) {
-    const fetchUser=async()=>{
-      setLoading(true)
-      try{
-      const response = await axios.get(
-        `${Backend_Url}/api/user/profile`,
-        {
-          headers: {
-            Authorization: `Bearer ${state.token}`
-          },
+  useEffect(() => {
+    if (!state.token) return; // Exit early if no token
+  
+    const fetchUser = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          `${Backend_Url}/api/user/profile`,
+          {
+            headers: {
+              Authorization: `Bearer ${state.token}`,
+            },
+          }
+        );
+  
+        if (response.data.success) {
+          setUser(response.data.data);
+          localStorage.setItem("user", JSON.stringify(response.data.data)); 
+        } else {
+          toast.error(response.data.message || "User update failed");
         }
-      );
-      
-      if (response.data.success) {
-        setUser(response.data.data)
-        localStorage.setItem("user",response.data.data)
-        setLoading(false)
-      } else {
-        toast.error(response.data.message || "User update failed");
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error(
-        error.response?.data?.message ||
+      } catch (error) {
+        console.error(error);
+        toast.error(
+          error.response?.data?.message ||
           error.message ||
           "An unexpected error occurred"
-      );
-
-    }finally{
-      setLoading(false)
-    }
-    }
-    fetchUser()
-  }
-  },[Backend_Url, state.token])
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchUser();
+  }, [Backend_Url, state.token, setUser, setLoading]);
 
   // Create an account
   const createUser = async (email, password) => {
@@ -183,7 +181,8 @@ const AuthProvider = ({ children }) => {
     setError(null)
     try {
         const response = await axios.post(`${Backend_Url}/api/auth/register`, { email, password });
-
+      console.log(response);
+      
         // Check for successful registration based on your API response structure
         if (response.data.success) {
             console.log("User registered successfully:", response.data); // Log the success data
@@ -196,13 +195,13 @@ const AuthProvider = ({ children }) => {
           })
           closeModal()
           setLoading(false)
-          navigate("/"); // Redirect to the specified path
-            
         } else {
               setError(response.data.message) 
               setModel("signup")
         }
     } catch (error) {
+      console.log(error);
+      
         // Log the error details
         console.error("Registration error:", error.response ? error.response.data : error.message);
         // Show a more user-friendly error message
@@ -249,7 +248,6 @@ const AuthProvider = ({ children }) => {
         // Close the modal after successful login
         closeModal();
         // Redirect user to the specified path
-        navigate("/"); 
       } else {
         // If the response indicates failure, show an error message
         setError(response.data.message || "Login failed");
@@ -323,8 +321,7 @@ const AuthProvider = ({ children }) => {
 
   //google sign
   const googlelogin = async () => {
-    let errorMessage;
-
+      setLoading(true)
     try {
         const result = await signInWithPopup(auth, provider); // Firebase Google auth
         
@@ -352,7 +349,6 @@ const AuthProvider = ({ children }) => {
         }
 
         const data = await response.json();
-        console.log('User account created:', data);
         if (data.success) {
             dispatch({
                 type: "LOGIN_SUCCESS",
@@ -360,17 +356,17 @@ const AuthProvider = ({ children }) => {
                     token: data.token,
                 }
             });
-            
+            toast.success("Logged in Successfully")
             // Save token in localStorage and show success message
             localStorage.setItem("token", data.token);
             // Close the modal after successful login
             closeModal();
-            // Redirect user to the specified path
-            navigate("/"); 
         }
     } catch (error) {
         console.error(error); // Log the error for debugging
         setError(error.message || "An unexpected error occurred during Google login");
+    }finally{
+      setLoading(false)
     }
 };
 

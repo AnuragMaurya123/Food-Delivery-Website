@@ -13,12 +13,13 @@ const Navbar = () => {
   const [isSticky, setIsSticky] = useState(false);
   const dropdownMenuRef = useRef(null);
   const dropdownServicesRef = useRef(null);
-  const {token,model, setModel,openModal,modalRef,countAddToCart} =useContext(AuthContext)  
+  const {token,openModal,modalRef,countAddToCart} =useContext(AuthContext)  
 
   const handleToggle = (dropdownName) => {
     setOpenDropdown(openDropdown === dropdownName ? null : dropdownName);
   };
 
+  //function for closing dropdown
   useEffect(() => {
     //when you click ouside menu or services option box it will close option box
     const handleOutside = (e) => {
@@ -42,6 +43,7 @@ const Navbar = () => {
   const handleonclick=()=>{
    return setOpenDropdown(null)
   }
+
  //list of nav link
   const navItems = (
     <>
@@ -120,7 +122,6 @@ const Navbar = () => {
   },[isSticky])
 
   const handleModel = () => {
-    setModel("login");
     if (modalRef.current) {
       openModal();
     }
@@ -224,7 +225,7 @@ const Navbar = () => {
           <FaUserAlt /> Login
           </a>
          }
-          <LoginSingup  model={model} setModel={setModel} />
+          <LoginSingup/>
         </div>
       </div>
     </header>

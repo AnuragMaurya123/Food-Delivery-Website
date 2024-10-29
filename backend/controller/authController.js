@@ -70,7 +70,7 @@ const registerUser = async (req, res) => {
     res.status(201).json({
       success: true,
       token,
-      message: "Registered & logged in successfully",
+      message: "Logged in Successfully",
     });
   } catch (error) {
     console.log(error);

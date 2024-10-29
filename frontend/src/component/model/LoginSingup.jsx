@@ -2,12 +2,11 @@ import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { GrFacebookOption, GrGithub, GrGooglePlus } from "react-icons/gr";
 import { AuthContext } from "../../context/AuthProvider";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const LoginSingup = () => {
   const { googlelogin,login,error,setError,createUser,modalRef,model, setModel } = useContext(AuthContext);
-  
-
+  const navigate=useNavigate()
   const {
     register,
     handleSubmit,
@@ -15,22 +14,30 @@ const LoginSingup = () => {
     formState: { errors },
   } = useForm();
   
+  //function for change models
   const handleModelChange = (modelName) => {
     setModel(modelName);
     setError(null);
     reset();
   };
 
+  //function for login
   const onSubmitLoginForm = async (data) => {
     await login(data.email,data.password)
+    navigate("/")
+    
   };
 
+  //function for Signup
   const onSubmitSignupForm = async (data) => {
-    await createUser(data.email,data.password) 
+    await createUser(data.email,data.password)
+    navigate("/") 
   };
 
+  //function for Google Login
   const handleGoogleLogin = async () => {
       await googlelogin();
+      navigate("/") 
   };
 
   return (
@@ -82,9 +89,9 @@ const LoginSingup = () => {
             </button>
 
             <p className="mt-5 text-textColor text-center">
-              Don&apos;t have an account?
-              <span className="text-red font-medium ml-1 cursor-pointer" onClick={() => handleModelChange(model === "login" ? "signup" : "login")}>
-                register
+           {model === "login" ? " Don't have an account? " : "Have an Account? "}
+              <span className="text-red  underline  font-medium ml-1 cursor-pointer" onClick={() => handleModelChange(model === "login" ? "signup" : "login")}>
+               {model === "login" ? "Signup" : "Login"}
               </span>
             </p>
           </form>
