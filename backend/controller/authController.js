@@ -36,7 +36,7 @@ const loginUser = async (req, res) => {
 // Register user function
 const registerUser = async (req, res) => {
   try {
-    const { email, password, photo } = req.body;
+    const {name, email, password, photo } = req.body;
 
     // Check if email already exists
     const exists = await userModel.findOne({ email });
@@ -58,6 +58,7 @@ const registerUser = async (req, res) => {
 
     // creating user
     const newUser = new userModel({
+      name,
       email,
       password: hashingPassword,
       photo: photoURL,

@@ -13,7 +13,7 @@ const Navbar = () => {
   const [isSticky, setIsSticky] = useState(false);
   const dropdownMenuRef = useRef(null);
   const dropdownServicesRef = useRef(null);
-  const {token,openModal,modalRef,countAddToCart} =useContext(AuthContext)  
+  const {token,openModal,modalRef,countAddToCart,setIsModalOpen} =useContext(AuthContext)  
 
   const handleToggle = (dropdownName) => {
     setOpenDropdown(openDropdown === dropdownName ? null : dropdownName);
@@ -121,12 +121,6 @@ const Navbar = () => {
     return ()=>{window.removeEventListener("scroll",handleNav)}
   },[isSticky])
 
-  const handleModel = () => {
-    if (modalRef.current) {
-      openModal();
-    }
-  };
-
 
   return (
     <header className={`${isSticky ? "fixed top-0 left-0 right-0 transition-all duration-300 ease-in-out shadow-md bg-base-100 z-50":""}`}>
@@ -221,7 +215,7 @@ const Navbar = () => {
 
           {/*Button  */}
          {!token &&
-          <a onClick={handleModel} className="btn bg-green flex items-center gap-2 rounded-full text-white px-6">
+          <a onClick={() => setIsModalOpen(true)} className="btn bg-green flex items-center gap-2 rounded-full text-white px-6">
           <FaUserAlt /> Login
           </a>
          }

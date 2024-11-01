@@ -1,15 +1,9 @@
 import { v2 as cloudinary } from 'cloudinary';
 import userModel from '../modal/userModel.js';
-import mongoose from 'mongoose';
 
 // for updating user
 export const updateUser = async (req, res) => {
     const id = req.UserId;
-
-    // Validate the ID format
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ success: false, message: 'Invalid user ID format' });
-    }
 
     // Check if user exists
     const user = await userModel.findById(id);
@@ -71,16 +65,10 @@ export const updateUser = async (req, res) => {
 //creating function for getting only one user
 export const getSingleUser=async (req,res)=>{
     const id = req.UserId;
-
-    // Validate the ID format
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ success: false, message: 'Invalid user ID format' });
-    }
-
     // Check if user exists
     const user = await userModel.findById(id);
     if (!user) {
-        return res.status(404).json({ success: false, message: 'User not found! Please Login Again! Please Login Again' });
+        return res.status(404).json({ success: false, message: 'User not found! Please Login Again' });
     }
     try {
          //finding user by id and getting user data escape password
@@ -92,4 +80,56 @@ export const getSingleUser=async (req,res)=>{
         console.log(error);
         res.json({ success:false,message:error})
     }
+}
+
+//creating function for getting all user
+export const getAllUser=async (req,res)=>{
+
+    try {
+         //finding users  and getting users data escape password
+        const allUser=await userModel.find({}).select("-password");
+        res.status(200).json({success:true,message:"User Found ",data:allUser})
+        
+    } catch (error) {
+        console.log(error);
+        res.json({ success:false,message:error})
+    }
+}
+
+//creating function for getting delete user
+export const deleteUser=async (req,res)=>{
+    const id = req.params.id;
+    try {
+        //finding user by id and Deleting
+      const deleteUser= await userModel.findByIdAndDelete(id);
+    
+    if (!deleteUser) {
+        return res.status(404).json({ success: false, message: 'User not found ' });
+    }
+       res.status(200).json({success:true,message:"Successfully Deleted User"})
+   } catch (error) {
+       console.log(error);
+       res.json({ success:false,message:error})
+   }
+}
+
+//creating function for toggle roles of user user
+
+export const toggleUser=async (req,res)=>{
+    const id = req.params.id;
+    try {
+        //finding user by id and Deleting
+       const user=await userModel.findById(id);
+       
+       
+       if(user.role==="admin"){
+        await userModel.findByIdAndUpdate(id,{role:"user"});
+       }else{
+        await userModel.findByIdAndUpdate(id,{role:"admin"});
+       }
+       res.status(200).json({success:true,message:"Role Change Successfull"})
+   } catch (error) {
+       console.log(error);
+       res.json({ success:false,message:error})
+   }
 }

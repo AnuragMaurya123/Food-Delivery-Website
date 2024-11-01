@@ -2,14 +2,15 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
-    name: { type: String, },
+    name: { type: String,  required: true},
     email: { type: String, required: true, unique: true },
     password: { type: String },
     phone: { type: String },
     photo: { type: String },
     gender: { type: String, enum: ["male", "female", "other"] },
     cartData: { type: Object, default: {} },
-    favoriteData: [{ type: mongoose.Schema.Types.ObjectId, ref: "menu" }], // Array of references to Menu
+    favoriteData: [{ type: mongoose.Schema.Types.ObjectId, ref: "menu" }], 
+    role: { type: String, enum: ["user", "admin"],default:'user' },
   },
   { timestamps: true, minimize: false }
 );

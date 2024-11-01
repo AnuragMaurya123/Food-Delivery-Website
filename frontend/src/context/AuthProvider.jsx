@@ -1,6 +1,6 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+
 /* eslint-disable react/prop-types */
-import React, { createContext, useEffect, useReducer, useRef, useState } from "react";
+import React, { createContext, useCallback, useEffect, useReducer, useRef, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
@@ -39,19 +39,22 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({});
   const Backend_Url = import.meta.env.VITE_BACKEND_URL;
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [error, setError] = useState(null);
   const [model, setModel] = useState("");
   const [userCartDetail, setUserCartDetail] = useState([{}]);
   const [state, dispatch] = useReducer(authReducer,initialState)
-  const modalRef = useRef(null);
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
   const [cartItem, setCartItem] = useState({})
+
   
+
 
   //list of fav food Ids
   useEffect(() => {
     const fetchfavIds = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(`${Backend_Url}/api/fav/list-fav`, {
           headers: {
@@ -63,6 +66,8 @@ const AuthProvider = ({ children }) => {
 
       } catch (error) {
         console.log(error);
+      }finally{
+        setLoading(false);
       }
     };
   
@@ -73,35 +78,34 @@ const AuthProvider = ({ children }) => {
   }, [Backend_Url, state.token]);
   
 
-  //list menu
-    const fetchData = async () => {
-     if (state.token) {
-      try {
-        const response = await axios.get(Backend_Url + "/api/menu/all-menu", {
-          headers: {
-            Authorization: `Bearer ${state.token}`
-          },
-        });
-        setRecepit(response.data.menus); 
-      } catch (error) {
-        console.log(error);
-      }
-     } else {
-      try {
-        const response = await axios.get(Backend_Url + "/api/menu/all-menu");
-        setRecepit(response.data.menus); 
-      } catch (error) {
-        console.log(error);
-      }
-     }
-    };
+  //list of menu list
+  const fetchData = useCallback(async () => {
+    if (!state.token) return; 
 
- useEffect(() => {
-    fetchData()
-  }, [state.token]);
+    setLoading(true);
+    try {
+      const response = await axios.get(`${Backend_Url}/api/menu/all-menu`, {
+        headers: {
+          Authorization: `Bearer ${state.token}`,
+        },
+      });
+      setRecepit(response.data.menus); 
+    } catch (error) {
+      console.error("Error fetching menu data:", error);
+      setError("Failed to fetch menu data. Please try again later."); 
+    } finally {
+      setLoading(false);
+    }
+  }, [Backend_Url, state.token])
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData, state.token]);
+
 
   // for removing from favorite list
   const  deleteToFav = async (id) => {
+    setLoading(true);
     try {
         // If it's already a favorite, remove it
         const response = await axios.delete(`${Backend_Url}/api/fav/delete-fav`, {
@@ -116,11 +120,14 @@ const AuthProvider = ({ children }) => {
         }
     } catch (error) {
       console.error(error);
+    }finally{
+      setLoading(false);
     }
   };
 
   // for adding from favorite list
   const addToFav=async (id)=>{
+    setLoading(true);
     try {
         // If it's not a favorite, add it
         const response = await axios.post(`${Backend_Url}/api/fav/add-fav`, { foodId: id }, {
@@ -135,6 +142,8 @@ const AuthProvider = ({ children }) => {
 
     } catch (error) {
       console.error(error);
+    }finally{
+      setLoading(false);
     }
   }
    
@@ -156,7 +165,7 @@ const AuthProvider = ({ children }) => {
   
         if (response.data.success) {
           setUser(response.data.data);
-          localStorage.setItem("user", JSON.stringify(response.data.data)); 
+          // localStorage.setItem("user", JSON.stringify(response.data.data)); 
         } else {
           toast.error(response.data.message || "User update failed");
         }
@@ -173,29 +182,32 @@ const AuthProvider = ({ children }) => {
     };
   
     fetchUser();
-  }, [Backend_Url, state.token, setUser, setLoading]);
+  }, [Backend_Url, state.token]);
+
 
   // Create an account
-  const createUser = async (email, password) => {
+  const createUser = async (name,email, password) => {
     setLoading(true)
     setError(null)
     try {
-        const response = await axios.post(`${Backend_Url}/api/auth/register`, { email, password });
+        const response = await axios.post(`${Backend_Url}/api/auth/register`, {name, email, password });
       console.log(response);
       
         // Check for successful registration based on your API response structure
         if (response.data.success) {
-            console.log("User registered successfully:", response.data); // Log the success data
-            toast.success(response.data.message);
+            console.log("User registered successfully:", response.data); // Log the success data 
+        // Save token in localStorage and show success message
+        localStorage.setItem("token", response.data.token);
             dispatch({
               type:"LOGIN_SUCCESS",
               payload:{
                 token:response.data.token,
               }
           })
-          closeModal()
-          setLoading(false)
+          setIsModalOpen(false)
+          toast.success(response.data.message);
         } else {
+               setIsModalOpen(true)
               setError(response.data.message) 
               setModel("signup")
         }
@@ -205,25 +217,12 @@ const AuthProvider = ({ children }) => {
         // Log the error details
         console.error("Registration error:", error.response ? error.response.data : error.message);
         // Show a more user-friendly error message
-        setError(error.response?.data?.message || "An unexpected error occurred during registration");
+        setError(error.response?.data?.message || error.message || "An unexpected error occurred during registration");
     }finally{
       setLoading(false)
     }
   };
 
-  //for controlling mode start
-  const openModal = () => {
-    if (modalRef.current) {
-      modalRef.current.showModal();
-    }
-  };
-
-  const closeModal = () => {
-    if (modalRef.current) {
-      modalRef.current.close();
-    }
-  };
-  //for controlling model end
 
   // Login with email and password
   const login = async (email, password) => {
@@ -232,6 +231,7 @@ const AuthProvider = ({ children }) => {
   
     try {
       const response = await axios.post(`${Backend_Url}/api/auth/login`, { email, password });
+
   
       // Check if the login is successful
       if (response.data.success) {
@@ -245,13 +245,14 @@ const AuthProvider = ({ children }) => {
         // Save token in localStorage and show success message
         localStorage.setItem("token", response.data.token);
         toast.success(response.data.message);
-        // Close the modal after successful login
-        closeModal();
-        // Redirect user to the specified path
+        setIsModalOpen(false)
+       
       } else {
         // If the response indicates failure, show an error message
+        setIsModalOpen(true)
         setError(response.data.message || "Login failed");
         setModel("login")
+        
       }
     } catch (error) {
       // Catch any network or unexpected errors and display them
@@ -264,13 +265,12 @@ const AuthProvider = ({ children }) => {
   
   // Logout
   const logout =async () => {
-    setLoading(true)
      if(user){
       dispatch({
         type:"LOGOUT"
       })
       localStorage.removeItem("token")
-      setLoading(false)
+      setUserCartDetail([{}])
      }
      
   };
@@ -360,7 +360,7 @@ const AuthProvider = ({ children }) => {
             // Save token in localStorage and show success message
             localStorage.setItem("token", data.token);
             // Close the modal after successful login
-            closeModal();
+            setIsModalOpen(false)
         }
     } catch (error) {
         console.error(error); // Log the error for debugging
@@ -383,7 +383,7 @@ const AuthProvider = ({ children }) => {
       confirmButtonText: "Login!"
     }).then((result) => {
       if (result.isConfirmed) {
-        openModal()
+        setIsModalOpen(true)
       }
     });
     return;
@@ -530,12 +530,10 @@ const handleDeleteToCart = async (itemId) => {
  //function for how many cart are there
  const countAddToCart = () => {
   if (!userCartDetail || typeof userCartDetail !== 'object') return 0;
-
   return Object.values(userCartDetail).reduce((totalCount, quantity) => {
     return totalCount + (quantity > 0 ? quantity : 0);
-  }, 0);
-};
-
+  }, 0)
+}
 
  //function for total price of food
  const getCardAmount = () => {
@@ -567,9 +565,6 @@ const handleDeleteToCart = async (itemId) => {
     setError,
     token:state.token,
     dispatch,
-    openModal,
-    closeModal,
-    modalRef,
     model, 
     setModel,
     googlelogin,
@@ -584,7 +579,9 @@ const handleDeleteToCart = async (itemId) => {
     fetchData,
     getCardAmount,
     deleteToFav,
-    addToFav
+    addToFav,
+    isModalOpen, 
+    setIsModalOpen,
   };
 
   return (

@@ -4,14 +4,15 @@ import LoginSingup from '../component/model/LoginSingup';
 import { AuthContext } from '../context/AuthProvider';
 
 const ProtectedRouter = ({ children }) => {
-  const { token, openModal, modalRef } = useContext(AuthContext);
+  const { token,setIsModalOpen,setModel } = useContext(AuthContext);
+console.log(token);
 
   useEffect(() => {
-    if (!token && modalRef.current) {
-      // Open the modal if the user is not authenticated
-      openModal();
+    if (!token) {
+      setModel("login")
+      setIsModalOpen(true)
     }
-  }, [token, openModal, modalRef]);
+  }, [token, setIsModalOpen, setModel]);
 
   if (token) {
     return children;
@@ -19,7 +20,7 @@ const ProtectedRouter = ({ children }) => {
     return (
       <div className="section-container">
         <h1 className="text-center lg:text-xl font-bold text-green">Please Login First!</h1>
-        <LoginSingup model="login" setModel={() => {}} />
+        <LoginSingup/>
       </div>
     );
   }

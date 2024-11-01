@@ -1,15 +1,16 @@
-import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import Home from '../pages/home/Home';
 import Main from '../layout/Main';
-import Menu from '../pages/shop/Menu';
-import Profile from '../component/updateUser/Profile';
-import CartItems  from '../pages/shop/CartItems';
 import ProtectedRouter from './ProtectedRouter';
+import Home from "../pages/home/Home"
+import Menu from "../pages/shop/Menu"
+import CartItems from "../pages/shop/CartItems"
+import Profile from '../component/updateUser/Profile';
 import DashboardLayout from '../layout/DashboardLayout';
-import AdminDashboard from '../pages/dashboad/admin/Dashboard';
-import UserDashboard from '../pages/dashboad/user/Dashboard';
-
+import Dashboard from '../pages/dashboad/admin/Dashboard';
+import Users from '../pages/dashboad/admin/Users';
+import AdminProtectedRouter from './adminProtectedRouter';
+import ManageMenu from '../pages/dashboad/admin/ManageMenu';
+// Inside your router configuration
 const router = createBrowserRouter([
   {
     path: '/',
@@ -21,32 +22,36 @@ const router = createBrowserRouter([
       },
       {
         path: '/menu',
-        element: <Menu />, 
+        element: <ProtectedRouter><Menu /></ProtectedRouter>, 
       },
       {
         path: '/update-profile',
-        element:<ProtectedRouter><Profile/></ProtectedRouter> , 
+        element: <ProtectedRouter><Profile /></ProtectedRouter>, 
       },
       {
         path: '/cart-items',
-        element:<ProtectedRouter><CartItems/></ProtectedRouter> , 
+        element: <ProtectedRouter><CartItems /></ProtectedRouter>, 
       }
     ]
   },
   {
     path: 'dashboard',
-    element: <DashboardLayout />,
+    element: <AdminProtectedRouter><DashboardLayout /></AdminProtectedRouter>,
     children: [
       {
-        path: 'admin',
-        element: <AdminDashboard />,
+        path: '',
+        element:  <AdminProtectedRouter><Dashboard /></AdminProtectedRouter>,
       },
       {
-        path: 'user',
-        element: <UserDashboard />, 
+        path: 'users',
+        element: <AdminProtectedRouter><Users /></AdminProtectedRouter>, 
+      },
+      {
+        path: 'list-menu',
+        element: <AdminProtectedRouter><ManageMenu/></AdminProtectedRouter>, 
       }
     ]
   }
-])
+]);
 
 export default router;

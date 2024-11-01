@@ -51,6 +51,7 @@ const Profile = () => {
                         <li><button onClick={() => handlePages("/update-profile")}>Profile</button></li>
                         <li><button onClick={() => handlePages("/orders")}>Orders</button></li>
                         <li><button onClick={() => handlePages("/settings")}>Settings</button></li>
+                       {user.role === "admin" &&  <li><button onClick={() => handlePages("/dashboard")}>Admin Dashboard</button></li>}
                         <li><button onClick={handleLogout}>Logout</button></li>
                     </ul>
                 </div>
