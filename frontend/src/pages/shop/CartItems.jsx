@@ -2,11 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const CartItems = () => {
   const { userCartDetail, handleUpdateToCart, handleDeleteToCart, recepit,user,countAddToCart,getCardAmount } = useContext(AuthContext);
   const [input, setInput] = useState([]);
   const [cartDetails, setCartDetails] = useState([]);
+  const navigate=useNavigate()
   
 
   // Effect to populate cartDetails based on userCartDetail and recepit
@@ -164,8 +166,8 @@ const CartItems = () => {
         <div className="md:w-1/2 space-y-3 mt-9 md:mt-0">
         <h3 className="font-medium"> Shopping Details</h3>
         <p className="">Total Items: {countAddToCart()}</p>
-        <p className="">Total Price: $ {getCardAmount().toFixed(2)}</p>
-        <button className="btn bg-green text-white">Place Your Order</button>
+        <p className="">Total Price: ₹ {getCardAmount().toFixed(2)}</p>
+        <button onClick={()=>navigate("/place-order")} className="btn bg-green text-white">Place Your Order</button>
         </div>
       </div>
     </div>

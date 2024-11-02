@@ -6,6 +6,7 @@ const Profile = () => {
     const { logout, user } = useContext(AuthContext);
     const location = useLocation();
     const navigate = useNavigate();
+ 
     const from = location.state?.from?.pathname || "/";
     // Function for logging out the user
     const handleLogout = async () => {
@@ -49,7 +50,7 @@ const Profile = () => {
                     <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
                         {/* Sidebar content here */}
                         <li><button onClick={() => handlePages("/update-profile")}>Profile</button></li>
-                        <li><button onClick={() => handlePages("/orders")}>Orders</button></li>
+                        <li><button onClick={() => handlePages("/order")}>Orders</button></li>
                         <li><button onClick={() => handlePages("/settings")}>Settings</button></li>
                        {user.role === "admin" &&  <li><button onClick={() => handlePages("/dashboard")}>Admin Dashboard</button></li>}
                         <li><button onClick={handleLogout}>Logout</button></li>

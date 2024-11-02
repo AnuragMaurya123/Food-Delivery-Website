@@ -4,9 +4,7 @@ import LoginSingup from '../component/model/LoginSingup';
 import { AuthContext } from '../context/AuthProvider';
 
 const ProtectedRouter = ({ children }) => {
-  const { token,setIsModalOpen,setModel } = useContext(AuthContext);
-console.log(token);
-
+  const { token,setIsModalOpen,setModel } = useContext(AuthContext);  
   useEffect(() => {
     if (!token) {
       setModel("login")

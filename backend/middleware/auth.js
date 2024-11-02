@@ -4,8 +4,7 @@ import userModel from "../modal/userModel.js";
 
 export const authenticate=(req,res,next)=>{
     //get token from header
-    const authToken=req.headers.authorization
-    
+    const authToken=req.headers.authorization    
     //checking token exists 
     if (!authToken || !authToken.startsWith('Bearer ')) {
        return res.status(401).json({success:false, message:"No token, Your not Authorized Please Login Again"}) 

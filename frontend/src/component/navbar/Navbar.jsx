@@ -90,7 +90,9 @@ const Navbar = () => {
         {openDropdown === "services" && (
           <ul className="lg:absolute lg:left-0  lg:top-8 lg:mt-2 w-48 bg-base-100 rounded-lg lg:shadow-lg p-2 z-10 ">
             <li>
+              <Link to={"/order"} onClick={handleonclick}>
               <a className="whitespace-nowrap">Online Orders</a>
+              </Link>
             </li>
             <li>
               <a className="whitespace-nowrap">Table Booking</a>

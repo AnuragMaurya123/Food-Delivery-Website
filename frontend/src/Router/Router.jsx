@@ -10,6 +10,9 @@ import Dashboard from '../pages/dashboad/admin/Dashboard';
 import Users from '../pages/dashboad/admin/Users';
 import AdminProtectedRouter from './adminProtectedRouter';
 import ManageMenu from '../pages/dashboad/admin/ManageMenu';
+import Orders from '../pages/shop/Orders';
+import PlaceOrder from '../pages/shop/PlaceOrder';
+import Verify from '../pages/shop/Verify';
 // Inside your router configuration
 const router = createBrowserRouter([
   {
@@ -31,6 +34,20 @@ const router = createBrowserRouter([
       {
         path: '/cart-items',
         element: <ProtectedRouter><CartItems /></ProtectedRouter>, 
+      },
+      {
+        path: '/order',
+        element: <ProtectedRouter><Orders /></ProtectedRouter>, 
+      }
+      ,
+      {
+        path: '/place-order',
+        element: <ProtectedRouter><PlaceOrder /></ProtectedRouter>, 
+      }
+      ,
+      {
+        path: '/verify',
+        element: <ProtectedRouter><Verify /></ProtectedRouter>, 
       }
     ]
   },

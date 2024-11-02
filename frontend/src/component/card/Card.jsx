@@ -17,6 +17,7 @@ const Card = ({ item }) => {
   }, [favorite, id]);
 
 
+ console.log(favorite);
  
 
   const handleFavToggle = (id) => {

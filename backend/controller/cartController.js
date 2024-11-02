@@ -121,8 +121,6 @@ export const updateToCart = async (req, res) => {
 
 // Function to delete an item in the cart
 export const deleteToCart = async (req, res) => {
-
-
     const id=req.UserId
     // Validate the ID format
     if (!mongoose.Types.ObjectId.isValid(id)) {

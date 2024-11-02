@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 import connectDB from "./config/connectDB.js";
 import connectCloudinary from "./config/cloudinary.js";
 import userRouter from "./router/userRouter.js";
@@ -8,6 +8,7 @@ import authRouter from "./router/authRouter.js";
 import cartRouter from "./router/cartRouter.js";
 import menuRouter from "./router/menuRouter.js";
 import favRouter from "./router/favRouter.js";
+import orderRouter from "./router/orderRouter.js";
 
 // app Config
 const app = express();
@@ -38,6 +39,7 @@ app.use("/api/user",userRouter);
 app.use("/api/cart",cartRouter);
 app.use("/api/menu",menuRouter);
 app.use("/api/fav",favRouter);
+app.use("/api/order",orderRouter);
 
 const port = process.env.PORT || 8000;
 
