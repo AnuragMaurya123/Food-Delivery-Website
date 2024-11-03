@@ -21,7 +21,7 @@ connectCloudinary()
 //midlleware
 app.use(express.json());
 app.use(cors({
-  origin: ['https://food-delivery-website-a3pd.vercel.app'],
+  origin: ['https://food-delivery-website-4dvo.vercel.app'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
