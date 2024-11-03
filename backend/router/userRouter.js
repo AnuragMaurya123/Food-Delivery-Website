@@ -10,7 +10,7 @@ const userRouter = express.Router();
 userRouter.put("/update", authenticate, upload.single('photo'), updateUser);
 userRouter.get("/profile", authenticate,getSingleUser);
 userRouter.get("/all-user", authenticate,restrict('admin'),getAllUser);
-userRouter.delete("/delete-user/:id", authenticate,restrict('admin'),deleteUser);
+userRouter.delete("/delete-user/:id", authenticate,deleteUser);
 userRouter.put("/update-role/:id", authenticate,restrict('admin'),toggleUser);
 
 export default userRouter;

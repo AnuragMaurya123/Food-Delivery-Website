@@ -24,6 +24,7 @@
     "react-router-dom": "^6.26.2",
     "react-slick": "^0.30.2",
     "react-toastify": "^10.0.6",
+    "reactjs-social-login": "^2.6.3",
     "sass-migrator": "^2.2.1",
     "slick-carousel": "^1.8.1",
     "sort-by": "^0.0.2",

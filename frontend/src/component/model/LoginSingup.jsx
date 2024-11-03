@@ -6,9 +6,10 @@ import CustomModal from "./CustomModal"; // Import the custom modal
 import { Link, useNavigate } from "react-router-dom";
 
 const LoginSignup = () => {
-    const { googlelogin, login, error, setError, createUser ,isModalOpen, setIsModalOpen,model, setModel} = useContext(AuthContext);
+    const { googlelogin, login, error, setError, createUser ,isModalOpen, setIsModalOpen,model, setModel,facebookLogin} = useContext(AuthContext);
     const navigate = useNavigate();
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
+
 
     const handleModelChange = (modelName) => {
         setModel(modelName);
@@ -28,6 +29,10 @@ const LoginSignup = () => {
 
     const handleGoogleLogin = async () => {
         await googlelogin();
+        navigate("/");
+    };
+    const handleFacebookLogin = async () => {
+        await facebookLogin();
         navigate("/");
     };
 
@@ -68,6 +73,7 @@ const LoginSignup = () => {
                             type="password"
                             placeholder="Password"
                             className="input input-bordered"
+                            autoComplete="off"
                             {...register("password", { required: "Password is required" })}
                         />
                         {errors.password && <p className="text-red text-sm">{errors.password.message}</p>}
@@ -92,7 +98,7 @@ const LoginSignup = () => {
                     <div className="text-2xl rounded-full px-3 py-3 bg-slate-200 hover:bg-green hover:text-white" onClick={handleGoogleLogin}>
                         <GrGooglePlus />
                     </div>
-                    <div className="text-2xl rounded-full px-3 py-3 bg-slate-200 hover:bg-green hover:text-white">
+                    <div className="text-2xl rounded-full px-3 py-3 bg-slate-200 hover:bg-green hover:text-white" onClick={handleFacebookLogin}>
                         <GrFacebookOption />
                     </div>
                     <div className="text-2xl rounded-full px-3 py-3 bg-slate-200 hover:bg-green hover:text-white">

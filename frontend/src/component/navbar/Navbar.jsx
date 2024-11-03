@@ -2,18 +2,19 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import logo from "/logo.png";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { FaUserAlt } from "react-icons/fa";
-import { Link} from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import LoginSingup from "../model/LoginSingup";
 import { AuthContext } from '../../context/AuthProvider'
 import Profile from "../Profile/Profile";
 
 const Navbar = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
-
+ 
   const [isSticky, setIsSticky] = useState(false);
   const dropdownMenuRef = useRef(null);
   const dropdownServicesRef = useRef(null);
-  const {token,openModal,modalRef,countAddToCart,setIsModalOpen} =useContext(AuthContext)  
+  const {query,setQuery,countAddToCart,setIsModalOpen,token,isSearchInput,handleSearch} =useContext(AuthContext)  
+  const navigate=useNavigate()
 
   const handleToggle = (dropdownName) => {
     setOpenDropdown(openDropdown === dropdownName ? null : dropdownName);
@@ -68,16 +69,16 @@ const Navbar = () => {
         </Link>
       </li>
       <li>
-        <a className="">Salad</a>
+         <Link onClick={handleonclick} 
+         to={"/fav-menu"}
+        >Favorite Menu</Link>
       </li>
-      <li>
-        <a className="">Pizza</a>
-      </li>
+     
     </ul>
   )}
 </li>
       <li ref={dropdownServicesRef} tabIndex={0} className="relative">
-        <a
+        <button
           role="button"
           onClick={() => handleToggle("services")}
           className="cursor-pointer"
@@ -86,20 +87,15 @@ const Navbar = () => {
         >
           Services{" "}
           {openDropdown === "services" ? <FaAngleUp /> : <FaAngleDown />}
-        </a>
+        </button>
         {openDropdown === "services" && (
           <ul className="lg:absolute lg:left-0  lg:top-8 lg:mt-2 w-48 bg-base-100 rounded-lg lg:shadow-lg p-2 z-10 ">
             <li>
               <Link to={"/order"} onClick={handleonclick}>
-              <a className="whitespace-nowrap">Online Orders</a>
+              <button className="whitespace-nowrap">Orders</button>
               </Link>
             </li>
-            <li>
-              <a className="whitespace-nowrap">Table Booking</a>
-            </li>
-            <li>
-              <a className="whitespace-nowrap">Order Tracking</a>
-            </li>
+           
           </ul>
         )}
       </li>
@@ -122,6 +118,17 @@ const Navbar = () => {
     window.addEventListener("scroll",handleNav)
     return ()=>{window.removeEventListener("scroll",handleNav)}
   },[isSticky])
+
+ useEffect(() => {
+   if(isSearchInput){
+    navigate("/menu")
+   }
+ 
+ }, [isSearchInput, navigate])
+ 
+  
+
+ 
 
 
   return (
@@ -166,8 +173,17 @@ const Navbar = () => {
         </div>
         <div className="navbar-end flex items-center gap-1">
 
+      
+          <div className="px-0">
+          <div className="form-control overflow-hidden ">
+          <input type="text"  value={query}  onChange={(e) => setQuery(e.target.value)} placeholder="Search" className={`input input-bordered w-full md:w-auto duration-500 ${isSearchInput ? " translate-x-0" :"translate-x-96"}`} />
+           </div>
+          </div>
+      
+
           {/* Serach Button */}
-          <button tabIndex={0} className="btn btn-ghost btn-circle flex">
+          <button tabIndex={0} className="btn btn-ghost btn-circle flex" onClick={handleSearch}>
+         
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -182,6 +198,7 @@ const Navbar = () => {
                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
               />
             </svg>
+            
           </button>
 
           {/* cart button */}
@@ -213,14 +230,18 @@ const Navbar = () => {
           </label>
          </Link>
 
-         {token && <Profile/>}
-
-          {/*Button  */}
-         {!token &&
-          <a onClick={() => setIsModalOpen(true)} className="btn bg-green flex items-center gap-2 rounded-full text-white px-6">
-          <FaUserAlt /> Login
-          </a>
-         }
+      
+         {token ? (
+            <Profile />
+          ) : (
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="btn bg-green flex items-center gap-2 rounded-full text-white px-6"
+              aria-label="Login Button"
+            >
+              <FaUserAlt /> Login
+            </button>
+          )}
           <LoginSingup/>
         </div>
       </div>

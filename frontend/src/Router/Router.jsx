@@ -13,6 +13,8 @@ import ManageMenu from '../pages/dashboad/admin/ManageMenu';
 import Orders from '../pages/shop/Orders';
 import PlaceOrder from '../pages/shop/PlaceOrder';
 import Verify from '../pages/shop/Verify';
+import FavoriteMenu from '../pages/shop/FavoriteMenu';
+import AdminOrders from '../pages/dashboad/admin/AdminOrders';
 // Inside your router configuration
 const router = createBrowserRouter([
   {
@@ -25,7 +27,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/menu',
-        element: <ProtectedRouter><Menu /></ProtectedRouter>, 
+        element: <Menu />, 
       },
       {
         path: '/update-profile',
@@ -37,7 +39,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/order',
-        element: <ProtectedRouter><Orders /></ProtectedRouter>, 
+        element: <Orders />, 
       }
       ,
       {
@@ -48,6 +50,11 @@ const router = createBrowserRouter([
       {
         path: '/verify',
         element: <ProtectedRouter><Verify /></ProtectedRouter>, 
+      }
+      ,
+      {
+        path: '/fav-menu',
+        element: <ProtectedRouter><FavoriteMenu /></ProtectedRouter>, 
       }
     ]
   },
@@ -66,6 +73,11 @@ const router = createBrowserRouter([
       {
         path: 'list-menu',
         element: <AdminProtectedRouter><ManageMenu/></AdminProtectedRouter>, 
+      }
+      ,
+      {
+        path: 'list-order',
+        element: <AdminProtectedRouter><AdminOrders/></AdminProtectedRouter>, 
       }
     ]
   }

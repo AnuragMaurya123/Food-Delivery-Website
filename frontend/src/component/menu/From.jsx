@@ -16,7 +16,7 @@ const From = ({
   setMenuType,
 }) => {
   const { _id, name, category, photo, price, recipe } = item;
-  const { user, token, Backend_Url,fetchData } = useContext(AuthContext);
+  const { user, token, Backend_Url,fetchData, } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
@@ -49,7 +49,7 @@ const From = ({
           }
         );
 
-        console.log(response);
+      
 
         if (response.data.success) {
           reset();
@@ -109,7 +109,7 @@ const From = ({
         }
       );
 
-      console.log("Response:", response);
+      
 
       if (response.data.success) {
         reset();

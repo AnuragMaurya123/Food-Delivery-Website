@@ -10,7 +10,6 @@ import { GiCancel } from "react-icons/gi";
 const Verify = () => {
     const {setUserCartDetail,token,Backend_Url,userCartDetail} =useContext(AuthContext)
     const [searchParams,setSearchParams]= useSearchParams()
-    console.log(userCartDetail);
     
     const success=searchParams.get("success")
     const orderId=searchParams.get("orderId")

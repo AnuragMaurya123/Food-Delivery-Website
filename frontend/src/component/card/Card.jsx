@@ -15,9 +15,6 @@ const Card = ({ item }) => {
     const isFavorite = favorite.some(fav => fav._id === id);
     setIsHeart(isFavorite);
   }, [favorite, id]);
-
-
- console.log(favorite);
  
 
   const handleFavToggle = (id) => {

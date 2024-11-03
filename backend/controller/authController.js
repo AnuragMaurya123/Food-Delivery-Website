@@ -79,7 +79,7 @@ const registerUser = async (req, res) => {
   }
 };
 
-const googleUser = async (req,res)=>{
+const sociallogin = async (req,res)=>{
   const { email, name, photo,phone } = req.body;
 
   try {
@@ -109,4 +109,6 @@ const googleUser = async (req,res)=>{
   }
 }
 
-export { loginUser, registerUser, googleUser };
+
+
+export { loginUser, registerUser, sociallogin };

@@ -43,9 +43,21 @@ export const addMenu=async (req,res)=>{
 
 //funtion for list menu
 export const listmenu=async (req,res)=>{
+    const {query} =req.query
     try {
+        let menus;        
+        if(query){
+            menus=await menuModel.find({
+                $or:[  //applying OR condition
+                    {name:{$regex:query,$options:"i"}}, // Case-insensitive search on the name field
+                    {category:{$regex:query,$options:"i"}}, // Case-insensitive search on the category field
+
+                ]})  
+                             
+        }else{
         //list menu
-        const menus=await menuModel.find({})
+         menus=await menuModel.find({})
+        }
         res.json({ success: true, menus});
     } catch (error) {
 

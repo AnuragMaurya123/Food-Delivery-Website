@@ -87,89 +87,96 @@ const CartItems = () => {
         </div>
       </div>
 
+    {cartDetails.length===0 ? (
+      <div className="flex items-center justify-center font-semibold text-2xl mb-6">Your Favorite  &nbsp; <span className='text-green'> Cart Is Empty !</span></div>
+    ):(<>
       <div className="overflow-x-auto mb-20">
-        <table className="table">
-          <thead className="bg-green text-white rounded-sm">
-            <tr>
-              <th>No.</th>
-              <th>Food</th>
-              <th>Item Name</th>
-              <th>Quantity</th>
-              <th>Price</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {cartDetails?.map((cartProduct, index) => {
-              const userCartData = recepit.find((item) => item._id === cartProduct._id);
-              if (!userCartData) return null; 
-              return (
-                <tr key={index}>
-                  <th>{index + 1}</th>
-                  <td>
-                    <div className="flex items-center gap-3">
-                      <div className="avatar">
-                        <div className="mask mask-squircle h-12 w-12">
-                          <img src={userCartData.photo} alt="Food Item" />
-                        </div>
+      <table className="table">
+        <thead className="bg-green text-white rounded-sm">
+          <tr>
+            <th>No.</th>
+            <th>Food</th>
+            <th>Item Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {cartDetails?.map((cartProduct, index) => {
+            const userCartData = recepit.find((item) => item._id === cartProduct._id);
+            if (!userCartData) return null; 
+            return (
+              <tr key={index}>
+                <th>{index + 1}</th>
+                <td>
+                  <div className="flex items-center gap-3">
+                    <div className="avatar">
+                      <div className="mask mask-squircle h-12 w-12">
+                        <img src={userCartData.photo} alt="Food Item" />
                       </div>
                     </div>
-                  </td>
-                  <td>{userCartData.name}</td>
-                  <td className="w-20">
-                    <div className="flex items-center justify-between gap-2">
-                      <button
-                        className="btn rounded-xl"
-                        onClick={() => handleDecrease(index)}
-                      >
-                        -
-                      </button>
-                      <input
-                        type="number"
-                        min="1"
-                        value={input[index] || 1}
-                        onChange={(e) => handleQuantityChange(index, e.target.value)}
-                        className="w-6 max-w-xs text-center"
-                      />
-                      <button
-                        className="btn rounded-xl"
-                        onClick={() => handleIncrease(index)}
-                      >
-                        +
-                      </button>
-                    </div>
-                  </td>
-                  <td>$ {(userCartData.price * input[index]).toFixed(2)}</td>
-                  <th>
+                  </div>
+                </td>
+                <td>{userCartData.name}</td>
+                <td className="w-20">
+                  <div className="flex items-center justify-between gap-2">
                     <button
-                      className="btn btn-error"
-                      onClick={() => handleDeleteCart(userCartData._id)}
+                      className="btn rounded-xl"
+                      onClick={() => handleDecrease(index)}
                     >
-                      <RiDeleteBin6Line className="text-white text-lg" />
+                      -
                     </button>
-                  </th>
-                </tr>
-              );
-             
-            })}
-          </tbody>
-        </table>
-      </div>
-
+                    <input
+                      type="number"
+                      min="1"
+                      value={input[index] || 1}
+                      onChange={(e) => handleQuantityChange(index, e.target.value)}
+                      className="w-6 max-w-xs text-center"
+                    />
+                    <button
+                      className="btn rounded-xl"
+                      onClick={() => handleIncrease(index)}
+                    >
+                      +
+                    </button>
+                  </div>
+                </td>
+                <td>$ {(userCartData.price * input[index]).toFixed(2)}</td>
+                <th>
+                  <button
+                    className="btn btn-error"
+                    onClick={() => handleDeleteCart(userCartData._id)}
+                  >
+                    <RiDeleteBin6Line className="text-white text-lg" />
+                  </button>
+                </th>
+              </tr>
+            );
+           
+          })}
+        </tbody>
+      </table>
+    </div>
       <div className="my-12 flex flex-col md:flex-row justify-between items-start">
-        <div className="md:w-1/2 space-y-3">
-        <h3 className="font-medium"> Customer Details</h3>
-        <p className="">Name: {user.name}</p>
-        <p className="">Email: {user.email}</p>
-        <p className="">Mobile No.: {user.phone === null ? "Not Available" : user.phone}</p>
-        </div>
-        <div className="md:w-1/2 space-y-3 mt-9 md:mt-0">
-        <h3 className="font-medium"> Shopping Details</h3>
-        <p className="">Total Items: {countAddToCart()}</p>
-        <p className="">Total Price: ₹ {getCardAmount().toFixed(2)}</p>
-        <button onClick={()=>navigate("/place-order")} className="btn bg-green text-white">Place Your Order</button>
-        </div>
+      <div className="md:w-1/2 space-y-3">
+      <h3 className="font-medium"> Customer Details</h3>
+      <p className="">Name: {user.name}</p>
+      <p className="">Email: {user.email}</p>
+      <p className="">Mobile No.: {user.phone === null ? "Not Available" : user.phone}</p>
       </div>
+      <div className="md:w-1/2 space-y-3 mt-9 md:mt-0">
+      <h3 className="font-medium"> Shopping Details</h3>
+      <p className="">Total Items: {countAddToCart()}</p>
+      <p className="">Total Price: ₹ {getCardAmount().toFixed(2)}</p>
+      <button onClick={()=>navigate("/place-order")} className="btn bg-green text-white">Place Your Order</button>
+      </div>
+    </div>
+    </>
+    )}
+     
+
+    
     </div>
   );
 };

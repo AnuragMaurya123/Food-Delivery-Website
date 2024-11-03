@@ -4,8 +4,7 @@ import From from "../../../component/menu/From";
 
 const AddMenu = () => {
   return (
-    <div>
-      
+    <div> 
       <From/>
     </div>
   );

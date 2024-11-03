@@ -73,7 +73,7 @@ const PlaceOrder = () => {
               }
             }
           );
-          console.log(response);
+        
           if (response.data.success) {
             setUserCartDetail({}); // Resetting the cart detail
             navigate("/order");
@@ -94,7 +94,7 @@ const PlaceOrder = () => {
               }
             }
           );
-            console.log(response);
+           
             
           if (response.data.success) {
              const { session_url } = response.data;

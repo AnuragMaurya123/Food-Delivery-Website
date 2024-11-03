@@ -16,6 +16,7 @@ const DashboardLayout = () => {
 const navigate=useNavigate()
 const drawer=useRef(null)
   const { loading} = useContext(AuthContext);
+  
   // Check if user is loading or an empty object
   if (loading) {
    return (
@@ -75,9 +76,9 @@ const drawer=useRef(null)
               </Link>
             </li>
             <li>
-              <Link to={""} onClick={() => setSidebarOpen(false)}>
+              <Link to={"/dashboard/list-order"} onClick={() => setSidebarOpen(false)}>
                 <FaBagShopping />
-                Manage Booking
+                Manage Orders
               </Link>
             </li>
             <li>
@@ -103,12 +104,6 @@ const drawer=useRef(null)
               <Link to={"/menu"} onClick={() => setSidebarOpen(false)}>
                 <TiThMenu />
                 Menu
-              </Link>
-            </li>
-            <li>
-              <Link to={"/orders"} onClick={() => setSidebarOpen(false)}>
-                <CiDeliveryTruck />
-                Orders
               </Link>
             </li>
             <li>

@@ -88,8 +88,7 @@ const Users = () => {
         }
       );
 
-      console.log(response);
-      
+     
       if (response.data.success) {
         Swal.fire({
           position: "center",

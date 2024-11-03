@@ -14,7 +14,7 @@ const ManageMenu = () => {
     const [error,setError] = useState(false);
     const [menuType,setMenuType] = useState("");
     const [menuToUpdate, setMenuToUpdate] = useState(null); 
-    console.log(recepit);
+   
 
 
     const handleUpdateMenu=(item)=>{
@@ -34,7 +34,7 @@ const ManageMenu = () => {
         }
       );
 
-      console.log(response);
+     
       
       if (response.data.success) {
         Swal.fire({

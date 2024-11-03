@@ -7,7 +7,7 @@ import { authenticate, restrict } from "../middleware/auth.js";
 const menuRouter=express.Router();
 
  menuRouter.post("/add-menu",authenticate,restrict('admin'),upload.single('photo'),addMenu);
- menuRouter.get("/all-menu",authenticate,restrict('admin'),listmenu);
+ menuRouter.get("/all-menu",listmenu);
  menuRouter.put("/update-menu/:id",authenticate,restrict('admin'),upload.single('photo'),updateMenu);
  menuRouter.delete("/delete-menu/:id",authenticate,restrict('admin'),removemenu);
 

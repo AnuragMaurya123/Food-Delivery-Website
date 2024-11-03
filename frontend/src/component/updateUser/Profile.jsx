@@ -11,7 +11,7 @@ const Profile = () => {
     } = useForm();
   
     const onSubmit = async (data) => {
-      console.log(errors);
+     
       updateUser(data.email,data.name,data.phone,data.gender,data.photo)
     };
   
