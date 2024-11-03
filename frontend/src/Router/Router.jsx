@@ -8,7 +8,7 @@ import Profile from '../component/updateUser/Profile';
 import DashboardLayout from '../layout/DashboardLayout';
 import Dashboard from '../pages/dashboad/admin/Dashboard';
 import Users from '../pages/dashboad/admin/Users';
-import AdminProtectedRouter from './adminProtectedRouter';
+import AdminProtectedRouter from './AdminProtectedRouter';
 import ManageMenu from '../pages/dashboad/admin/ManageMenu';
 import Orders from '../pages/shop/Orders';
 import PlaceOrder from '../pages/shop/PlaceOrder';
