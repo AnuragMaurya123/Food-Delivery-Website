@@ -5,8 +5,8 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_Sercet_ApiKey,
-  authDomain: import.meta.env.VITE_Sercet_AuthDomain,
+  apiKey: import.meta.env.VITE_Sercet_Api,
+  authDomain: import.meta.env.VITE_Sercet_Domain,
   projectId: import.meta.env.VITE_Sercet_ProjectId,
   storageBucket: import.meta.env.VITE_Sercet_StorageBucket,
   messagingSenderId: import.meta.env.VITE_Sercet_MessagingSenderId,
