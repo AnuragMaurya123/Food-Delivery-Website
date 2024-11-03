@@ -88,7 +88,7 @@ const CartItems = () => {
       </div>
 
     {cartDetails.length===0 ? (
-      <div className="flex items-center justify-center font-semibold text-2xl mb-6">Your Favorite  &nbsp; <span className='text-green'> Cart Is Empty !</span></div>
+      <div className="flex items-center justify-center font-semibold text-2xl mb-6">Your   &nbsp; <span className='text-green'> Cart Is Empty !</span></div>
     ):(<>
       <div className="overflow-x-auto mb-20">
       <table className="table">

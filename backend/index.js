@@ -21,12 +21,11 @@ connectCloudinary()
 //midlleware
 app.use(express.json());
 app.use(cors({
-  origin: 'https://food-delivery-website-4dvo.vercel.app',
+  origin: ['http://localhost:5173'],
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow these HTTP methods
-  allowedHeaders: ['Content-Type', 'Authorization'], // Allow specific headers
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
-
 
 
 //sending request

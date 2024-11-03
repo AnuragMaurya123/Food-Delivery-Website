@@ -86,7 +86,6 @@ const AuthProvider = ({ children }) => {
           Authorization: `Bearer ${state.token}`
         }
       });
-      console.log(response);
       
       if (response.data.success) {
         const allOrderItems = response.data.orders.flatMap((order) => 
