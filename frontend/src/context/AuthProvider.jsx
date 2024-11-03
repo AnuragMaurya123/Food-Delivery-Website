@@ -81,11 +81,12 @@ const AuthProvider = ({ children }) => {
       if (!state.token) {
         return;
       }
-      const response = await axios.post(`${Backend_Url}/api/order/userorders`, {}, {
+      const response = await axios.get(`${Backend_Url}/api/order/userorders`, {
         headers: {
           Authorization: `Bearer ${state.token}`
         }
       });
+      console.log(response);
       
       if (response.data.success) {
         const allOrderItems = response.data.orders.flatMap((order) => 

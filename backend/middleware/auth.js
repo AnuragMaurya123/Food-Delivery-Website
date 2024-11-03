@@ -15,6 +15,7 @@ export const authenticate=(req,res,next)=>{
     try {
     //spilting bearer from token
     const token = authToken.split(" ")[1];       
+      console.log(token);
       
      // Decode token
      const decoded_token = jwt.verify(token, process.env.SECRET_TOKEN);

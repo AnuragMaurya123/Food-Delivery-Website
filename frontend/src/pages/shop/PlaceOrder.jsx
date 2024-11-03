@@ -7,10 +7,10 @@ import { AuthContext } from "../../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
 
 const PlaceOrder = () => {
-  const { user, getCardAmount, setUserCartDetail, recepit, userCartDetail, delivery_fee, token, Backend_Url } = useContext(AuthContext);
+  const { user, getCardAmount, setUserCartDetail, recepit, userCartDetail, delivery_fee, token, Backend_Url,fetchOrders } = useContext(AuthContext);
   const navigate = useNavigate();
   
-  const [method, setMethod] = useState("");
+  const [method, setMethod] = useState("cod");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -73,11 +73,14 @@ const PlaceOrder = () => {
               }
             }
           );
-        
+          console.log(response);
           if (response.data.success) {
-            setUserCartDetail({}); // Resetting the cart detail
+            setUserCartDetail([{}]); 
+            fetchOrders()
             navigate("/order");
           } else {
+            console.log(response);
+            
             toast.error(response.data.msg);
           }
         } catch (error) {
@@ -99,6 +102,8 @@ const PlaceOrder = () => {
           if (response.data.success) {
              const { session_url } = response.data;
              window.location.replace(session_url);
+             setUserCartDetail([{}]); 
+            fetchOrders()
           } else {
             toast.error(response.data.msg);
           }

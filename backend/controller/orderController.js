@@ -15,12 +15,14 @@ const stripe=new Stripe(process.env.STRIPE_SECRET)
 //place orders using COD
 const placeOrder=async (req,res)=>{
     const userId = req.UserId;
-    const user = await userModel.findById(userId);
+    const user = await userModel.findById({_id:userId});
+
+    
     if (!user) {
       return res.status(404).json({ success: false, message: 'User not found! Please Login Again' });
     }
     try {
-        const {userId, items, amount, address} =req.body
+        const {items, amount, address} =req.body
 
         const orderData={
             userId,
@@ -31,6 +33,8 @@ const placeOrder=async (req,res)=>{
             payment:false,
             date:Date.now()
         }
+      
+        
 
         const newOrder=await orderModel(orderData)
         await newOrder.save()
@@ -153,6 +157,8 @@ const userOrder=async (req,res)=>{
     }
     try{
     const orders=await orderModel.find({userId})
+    console.log(orders);
+    
     res.json({ success: true, orders});
     } catch (error) {
         console.log(error);

@@ -11,7 +11,7 @@ orderRouter.post("/place",authenticate,placeOrder)
 orderRouter.post("/stripe",authenticate,placeOrderStripe)
 
 //user router
-orderRouter.post("/userorders",authenticate,userOrder)
+orderRouter.get("/userorders",authenticate,userOrder)
 
 //verify payment
 orderRouter.post("/verifystripe",authenticate,verifyStripe)
