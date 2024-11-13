@@ -21,7 +21,7 @@ connectCloudinary()
 //midlleware
 app.use(express.json());
 app.use(cors({
-  origin: ['https://foods-databases.web.app'],
+  origin: '*',  // Allow all origins for testing
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],

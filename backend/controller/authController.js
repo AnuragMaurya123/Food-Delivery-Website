@@ -79,36 +79,7 @@ const registerUser = async (req, res) => {
   }
 };
 
-const sociallogin = async (req,res)=>{
-  const { email, name, photo,phone } = req.body;
-
-  try {
-    // Check if the user already exists
-    let user = await userModel.findOne({ email });
-
-    // If the user doesn't exist, create a new user
-    if (!user) {
-      user = new userModel({
-        email,
-        name,
-        photo,
-        phone,
-        // Add any additional fields required for your user model
-      });
-      await user.save();
-    }
-
-     // creating token for user
-     const token = createjwt(user._id);
-
-    // Respond with success and the user data (or any other response you need)
-    res.status(200).json({ success: true, message: 'User created or fetched successfully', token });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: 'An error occurred', error });
-  }
-}
 
 
 
-export { loginUser, registerUser, sociallogin };
+export { loginUser, registerUser};

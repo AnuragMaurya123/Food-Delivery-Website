@@ -1,13 +1,10 @@
 
 /* eslint-disable react/prop-types */
-import React, { createContext, useCallback, useEffect, useReducer, useRef, useState } from "react";
+import React, { createContext, useCallback, useEffect, useReducer, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { FacebookAuthProvider, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { getAuth } from "firebase/auth";
-import app from "../firebase/firebase.config";
 import Swal from 'sweetalert2';
-import { useNavigate } from "react-router-dom";
+
 
 const initialState={
   token:localStorage.getItem("token") || null,
@@ -40,13 +37,13 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({});
   const Backend_Url = import.meta.env.VITE_BACKEND_URL;
+  console.log(Backend_Url);
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [error, setError] = useState(null);
   const [model, setModel] = useState("");
   const [userCartDetail, setUserCartDetail] = useState([{}]);
   const [state, dispatch] = useReducer(authReducer,initialState)
-  const auth = getAuth(app);
-  const provider = new GoogleAuthProvider();
   const [cartItem, setCartItem] = useState({})
   const [ordersData, setOrdersData] = useState([]);
   const currency="$"
@@ -421,110 +418,6 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  //google sign
-  const googlelogin = async () => {
-      setLoading(true)
-    try {
-        const result = await signInWithPopup(auth, provider); // Firebase Google auth
-        
-        // Get user info
-        const user = result.user;
-        const userData = {
-            name: user.displayName,
-            email: user.email,
-            photo: user.photoURL,
-            phone:user.phoneNumber 
-           
-        };
-        
-        // Send user data to your backend to create an account in the database
-        const response = await fetch(`${Backend_Url}/api/auth/sociallogin`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(userData),
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to create user account in the database');
-        }
-
-        const data = await response.json();
-        if (data.success) {
-            dispatch({
-                type: "LOGIN_SUCCESS",
-                payload: {
-                    token: data.token,
-                }
-            });
-            toast.success("Logged in Successfully")
-            // Save token in localStorage and show success message
-            localStorage.setItem("token", data.token);
-            // Close the modal after successful login
-            setIsModalOpen(false)
-        }
-    } catch (error) {
-        console.error(error); // Log the error for debugging
-        setError(error.message || "An unexpected error occurred during Google login");
-    }finally{
-      setLoading(false)
-    }
-};
-
-  //google sign
-  const facebookLogin = async () => {
-    setLoading(true);
-    try {
-      const provider = new FacebookAuthProvider();
-      const result = await signInWithPopup(auth, provider); // Use Facebook provider for login
-  
-      // Get user info
-      const user = result.user;
-      const userData = {
-        name: user.displayName,
-        email: user.email,
-        photo: user.photoURL,
-        phone: user.phoneNumber 
-      };
-  
-      // Send user data to your backend to create an account in the database
-      const response = await fetch(`${Backend_Url}/api/auth/sociallogin`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      });
-      
-      
-      if (!response.ok) {
-        throw new Error('Failed to create user account in the database');
-      }
-  
-      const data = await response.json();
-      if (data.success) {
-        dispatch({
-          type: "LOGIN_SUCCESS",
-          payload: {
-            token: data.token,
-          }
-        });
-        toast.success("Logged in Successfully");
-        
-        // Save token in localStorage and show success message
-        localStorage.setItem("token", data.token);
-  
-        // Close the modal after successful login
-        setIsModalOpen(false);
-      }
-    } catch (error) {
-      console.error(error); // Log the error for debugging
-      setError(error.message || "An unexpected error occurred during Facebook login");
-    } finally {
-      setLoading(false);
-    }
-  };
 
 
  //add to cart
@@ -725,7 +618,7 @@ const handleDeleteToCart = async (itemId) => {
     model, 
     delivery_fee,
     setModel,
-    googlelogin,
+   
     handleAddToCart,
     userCartDetail,
     currency,
@@ -750,7 +643,7 @@ const handleDeleteToCart = async (itemId) => {
     query,
     setQuery,
     handleSearch,
-    facebookLogin
+    
       
   };
 

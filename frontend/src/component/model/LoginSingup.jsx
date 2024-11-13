@@ -27,14 +27,7 @@ const LoginSignup = () => {
         navigate("/");
     };
 
-    const handleGoogleLogin = async () => {
-        await googlelogin();
-        navigate("/");
-    };
-    const handleFacebookLogin = async () => {
-        await facebookLogin();
-        navigate("/");
-    };
+   
 
     return (
         <>
@@ -94,17 +87,7 @@ const LoginSignup = () => {
                     </p>
                 </form>
 
-                <div className="flex items-center justify-center gap-4 mt-4">
-                    <div className="text-2xl rounded-full px-3 py-3 bg-slate-200 hover:bg-green hover:text-white" onClick={handleGoogleLogin}>
-                        <GrGooglePlus />
-                    </div>
-                    <div className="text-2xl rounded-full px-3 py-3 bg-slate-200 hover:bg-green hover:text-white" onClick={handleFacebookLogin}>
-                        <GrFacebookOption />
-                    </div>
-                    <div className="text-2xl rounded-full px-3 py-3 bg-slate-200 hover:bg-green hover:text-white">
-                        <GrGithub />
-                    </div>
-                </div>
+
             </CustomModal>
         </>
     );
