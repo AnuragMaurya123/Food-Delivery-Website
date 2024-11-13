@@ -10,6 +10,7 @@ const DeliveryCharges=50
 
 //gateway initialize
 const stripe=new Stripe(process.env.STRIPE_SECRET)
+console.log(process.env.STRIPE_SECRET);
 
 
 //place orders using COD
