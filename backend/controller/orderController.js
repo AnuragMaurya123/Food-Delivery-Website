@@ -1,16 +1,14 @@
 
-import dotenv from 'dotenv';
+
 import Stripe from "stripe"
 import orderModel from "../modal/orderModel.js"
 import userModel from "../modal/userModel.js"
-dotenv.config();
 //global variable
 const currency="inr"
 const DeliveryCharges=50
 
 //gateway initialize
 const stripe=new Stripe(process.env.STRIPE_SECRET)
-console.log(process.env.STRIPE_SECRET);
 
 
 //place orders using COD
